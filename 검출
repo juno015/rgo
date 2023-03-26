@@ -1,0 +1,55 @@
+import cv2
+import numpy as np
+import sys
+"""
+src = cv2.imread('rain.jpg') #image
+
+if src is None: #if image is none
+    print('Image load failed!')
+    sys.exit() #end
+
+src_hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV) #bgr to hsv
+
+orange_mask = cv2.inRange(src_hsv, (10, 100, 0), (15, 255, 255)) #o
+green_mask = cv2.inRange(src_hsv, (50, 100, 0), (80, 255, 255)) #g
+red_mask = cv2.inRange(src_hsv, (0, 100, 0), (8, 255, 255)) #r
+
+green = cv2.bitwise_and(src,src, mask= green_mask) #mask
+orange = cv2.bitwise_and(src,src, mask= orange_mask)
+red = cv2.bitwise_and(src,src, mask= red_mask)
+cv2.imshow('frame',green)
+cv2.imshow('mask',orange)
+cv2.imshow("src",red)
+
+cv2.waitKey()
+"""
+
+cap = cv2.VideoCapture("0.mp4") #reading video, 0 = camera, "video link" 
+
+while(1):
+    _, frame = cap.read()
+    frame = cv2.resize(frame, dsize=(600, 400)) #change video size
+
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    red_mask = cv2.inRange(hsv, (170, 30, 0), (179, 255, 255))
+    orange_mask = cv2.inRange(hsv, (10, 100, 0), (15, 255, 255))
+    green_mask = cv2.inRange(hsv, (50, 30, 0), (80, 255, 255))
+
+
+    green = cv2.bitwise_and(frame, frame, mask=green_mask)
+    orange = cv2.bitwise_and(frame, frame, mask=orange_mask)
+    red = cv2.bitwise_and(frame, frame, mask=red_mask)
+
+
+    cv2.imshow('green', green)
+    cv2.imshow('orange', orange)
+    cv2.imshow("red", red)
+
+    cv2.imshow("src", frame)
+    k = cv2.waitKey(5) & 0xFF
+    if k == 27:
+        break
+
+cap.realse()
+cv2.destroyAllWindows()
